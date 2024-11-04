@@ -1,4 +1,4 @@
-##MODIFY THE PARAMETERS OF THE CODE ACCORDINGLY TO EACH DEVICE, SOME MAY USE WAN INSTEAD OF WWAN##
+##MODIFY THE PARAMETERS OF THE CODE ACCORDINGLY TO EACH DEVICE, SOME MAY USE THE WAN INTERFACE INSTEAD OF WWAN INTERFACE##
 
 Overview This Python script automates the configuration of an IPsec VPN and associated firewall policies on FortiGate devices. Using Paramiko for SSH connectivity, the script performs the following tasks in order:
 
