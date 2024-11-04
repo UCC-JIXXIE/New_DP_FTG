@@ -1,3 +1,4 @@
+import os
 import time
 import paramiko
 from datetime import datetime
@@ -29,19 +30,31 @@ def execute_commands(client, commands):
     return "Command fail" not in output  # Return False if any command fails
 
 def download_backup(client, device_ip, backup_stage):
-    """Download the backup file from FortiGate."""
-    sftp = client.open_sftp()
-    remote_backup_path = "/sys_config"  # Default system config path on FortiGate
+    """Create and download the backup file from FortiGate."""
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    local_backup_path = f"backup_{device_ip}_{backup_stage}_{timestamp}.conf"
+    remote_backup_filename = f"backup_{backup_stage}_{timestamp}.conf"
+    
+    # Create a backup file on the FortiGate
+    stdin, stdout, stderr = client.exec_command(f"execute backup config flash {remote_backup_filename}")
+    error = stderr.read().decode().strip()
+    
+    if error:
+        print(f"Failed to save backup on {device_ip}: {error}")
+        return  # Exit if backup failed
 
-    try:
-        sftp.get(remote_backup_path, local_backup_path)
+    print(f"{backup_stage.capitalize()} backup saved as {remote_backup_filename} on {device_ip}")
+
+    # Use SCP to copy the file from FortiGate to the local machine
+    local_backup_path = f"{device_ip}_{backup_stage}_backup_{timestamp}.conf"
+    scp_command = f"scp {device_ip}:/flash/{remote_backup_filename} {local_backup_path}"
+    
+    # Use os.system to execute SCP command
+    result = os.system(scp_command)
+    
+    if result == 0:
         print(f"{backup_stage.capitalize()} backup downloaded successfully for {device_ip} to {local_backup_path}")
-    except Exception as e:
-        print(f"Failed to download {backup_stage} backup for {device_ip}: {e}")
-    finally:
-        sftp.close()
+    else:
+        print(f"Failed to download {backup_stage} backup from {device_ip}. SCP command failed.")
 
 def configure_fortigate(device):
     """Connect to FortiGate, perform pre- and post-backups, and run configuration commands."""
