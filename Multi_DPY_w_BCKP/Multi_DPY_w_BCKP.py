@@ -10,9 +10,9 @@ fortigate_devices = [
         "password": "4gu4k4n_17"
     },
     {
-        "ip": "10.10.15.32",
+        "ip": "10.10.14.30",
         "username": "admin",
-        "password": "another_password"
+        "password": "4gu4k4n_17"
     }
     # Add more FortiGate devices as needed
 ]
