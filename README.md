@@ -1,3 +1,5 @@
+##MODIFY THE PARAMETERS OF THE CODE ACCORDINGLY TO EACH DEVICE, SOME MAY USE WAN INSTEAD OF WWAN##
+
 Overview This Python script automates the configuration of an IPsec VPN and associated firewall policies on FortiGate devices. Using Paramiko for SSH connectivity, the script performs the following tasks in order:
 
 Configures an IPsec VPN tunnel using custom Phase 1 and Phase 2 parameters. Adds a static route for the VPN network. Creates two firewall policies to manage traffic in and out of the VPN. This script is ideal for network administrators looking to quickly set up consistent VPN configurations across multiple FortiGate devices.
