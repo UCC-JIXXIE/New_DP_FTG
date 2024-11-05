@@ -48,19 +48,22 @@ def download_backup(client, device_ip, backup_stage):
     local_backup_path = f"{device_ip}_{backup_stage}_backup_{timestamp}.conf"
     scp_command = f"scp {device_ip}:/flash/{remote_backup_filename} {local_backup_path}"
     
-    # Use os.system to execute SCP command
-    result = os.system(scp_command)
-    
-    if result == 0:
-        print(f"{backup_stage.capitalize()} backup downloaded successfully for {device_ip} to {local_backup_path}")
-    else:
-        print(f"Failed to download {backup_stage} backup from {device_ip}. SCP command failed.")
+    # Execute the SCP command
+    os.system(f"sshpass -p {device['password']} {scp_command}")
+
+    # Alternatively, you can use paramiko to handle SCP if you don't want to rely on sshpass
+    # with paramiko's SFTP functionality
+    # Uncomment below if you prefer using paramiko for SFTP download
+    # sftp = client.open_sftp()
+    # sftp.get(f"/flash/{remote_backup_filename}", local_backup_path)
+    # sftp.close()
+
+    print(f"{backup_stage.capitalize()} backup downloaded successfully for {device_ip} to {local_backup_path}")
 
 def configure_fortigate(device):
     """Connect to FortiGate, perform pre- and post-backups, and run configuration commands."""
     client = paramiko.SSHClient()
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    client.connect(device["ip"], username=device["username"], password=device["password"])
 
     # Step 1: Pre-configuration backup
     download_backup(client, device["ip"], "pre")
