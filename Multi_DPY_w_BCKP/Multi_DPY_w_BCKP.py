@@ -12,6 +12,7 @@ FORTIGATES = [
 FTP_SERVER_IP = "10.10.14.50"
 FTP_USERNAME = "filezilla_py"
 FTP_PASSWORD = "Metro1998.2050"
+BACKUP_MAIN_FOLDER = "FTP_BCKP"
 
 def execute_commands(client, commands):
     """Execute a list of CLI commands on the FortiGate."""
@@ -24,18 +25,17 @@ def execute_commands(client, commands):
     print(output)
 
 def create_backup(client, label, fortigate_ip):
-    """Creates a backup with a given label ('pre' or 'post') and timestamp, and organizes in IP-based folders."""
-    # Generate timestamp and folder paths
+    """Creates a backup with a given label ('pre' or 'post') and timestamp, organized in IP-based folders."""
+    # Generate timestamp for backup filenames
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    date_folder = datetime.now().strftime("%Y-%m-%d")
     backup_filename = f"{label}_backup_{timestamp}.conf"
     
-    # Create directories if they don't exist
-    ip_folder_path = os.path.join(fortigate_ip, date_folder)
-    os.makedirs(ip_folder_path, exist_ok=True)
+    # Create the main backup directory and subdirectories for each device IP
+    device_folder_path = os.path.join(BACKUP_MAIN_FOLDER, fortigate_ip)
+    os.makedirs(device_folder_path, exist_ok=True)
     
     # Full path for FTP backup command
-    backup_path = os.path.join(ip_folder_path, backup_filename)
+    backup_path = os.path.join(device_folder_path, backup_filename)
     
     # Execute the FTP backup command
     commands_backup = [
