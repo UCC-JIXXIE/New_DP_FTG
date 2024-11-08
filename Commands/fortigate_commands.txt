@@ -1,0 +1,65 @@
+# Commands for IPsec Tunnel (Step 1)
+config vpn ipsec phase1-interface
+edit AGK-OCI-CARCAMO
+set interface wwan
+set remote-gw 159.54.146.111
+set psksecret 1iAoDhcEAgk2025#
+set proposal 3des-md5
+set xauthtype client
+set authusr CAC_LAKIN
+set authpasswd T3lemetria.2025#
+set auto-negotiate enable
+set autokey-keepalive enable
+set keylife 3600
+next
+end
+
+# Commands for IPsec Tunnel Phase 2 (Step 1)
+config vpn ipsec phase2-interface
+edit AGK-OCI-CARCAMO
+set phase1name AGK-OCI-CARCAMO
+set src-subnet 10.10.14.0/24
+set dst-subnet 10.70.0.0/24
+set proposal 3des-md5
+next
+end
+
+# Commands for Static Route (Step 2)
+config router static
+edit 1
+set dst 10.70.0.0 255.255.255.0
+set device AGK-OCI-CARCAMO
+next
+end
+
+# Commands for Firewall Policy 1 (Step 3)
+config firewall policy
+edit 1
+set name AGK-OCI-CARCAMOS
+set srcintf AGK-OCI-CARCAMO
+set dstintf wwan
+set srcaddr all
+set dstaddr all
+set service ALL
+set nat disable
+set logtraffic all
+set schedule always
+set action accept
+next
+end
+
+# Commands for Firewall Policy 2 (Step 3)
+config firewall policy
+edit 2
+set name LAN-AGK-OCI-CARCAMOS
+set srcintf wwan
+set dstintf AGK-OCI-CARCAMO
+set srcaddr all
+set dstaddr all
+set service ALL
+set nat disable
+set logtraffic all
+set schedule always
+set action accept
+next
+end
