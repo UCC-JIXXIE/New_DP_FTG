@@ -4,30 +4,14 @@ import paramiko
 import logging
 from datetime import datetime
 from cryptography.fernet import Fernet
-import sys
 
 # Set up logging
-LOG_FILE = f"fortigate_configuration_{datetime.now().strftime('%Y%m%d')}.log"
+LOG_FILE = "fortigate_configuration.log"
 logging.basicConfig(
     filename=LOG_FILE,
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s"
 )
-
-# Redirect stdout and stderr to the logging system
-class StreamToLogger:
-    def __init__(self, log_level):
-        self.log_level = log_level
-
-    def write(self, message):
-        if message.strip():  # Ignore empty messages
-            self.log_level(message.strip())
-
-    def flush(self):
-        pass  # No need to flush as logging handles it
-
-sys.stdout = StreamToLogger(logging.info)
-sys.stderr = StreamToLogger(logging.error)
 
 # File paths
 IP_LIST_FILE = "Segments/fortigate_ips.txt"
@@ -72,7 +56,7 @@ def execute_commands(client, commands):
             time.sleep(1)  # Add delay to ensure command execution
         output = shell.recv(65535).decode()
         logging.info("Commands executed successfully")
-        print(output)  # Will be logged due to stdout redirection
+        print(output)
     except Exception as e:
         logging.error(f"Failed to execute commands: {e}")
         raise
