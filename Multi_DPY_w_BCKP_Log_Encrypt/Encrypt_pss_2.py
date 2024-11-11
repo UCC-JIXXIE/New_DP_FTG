@@ -2,7 +2,7 @@ import os
 from cryptography.fernet import Fernet
 
 # Define the folder for storing encryption files
-CRYPT_FOLDER = "crypt"
+CRYPT_FOLDER = "Crypt"
 
 # Ensure the crypt folder exists
 os.makedirs(CRYPT_FOLDER, exist_ok=True)
