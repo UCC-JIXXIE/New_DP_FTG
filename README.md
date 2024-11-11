@@ -1,28 +1,93 @@
-##MODIFY THE PARAMETERS OF THE CODE ACCORDINGLY TO EACH DEVICE, SOME MAY USE THE WAN INTERFACE INSTEAD OF WWAN INTERFACE##
+This project automates the configuration of FortiGate VPNs, creates backups, and maintains logs for each run. The primary script securely connects to specified FortiGate devices, configures VPN settings, and stores backups on an FTP server. This README provides an overview of the folder structure, required tools, and usage instructions.
 
-Overview This Python script automates the configuration of an IPsec VPN and associated firewall policies on FortiGate devices. Using Paramiko for SSH connectivity, the script performs the following tasks in order:
+Folder Structure
 
-Configures an IPsec VPN tunnel using custom Phase 1 and Phase 2 parameters. Adds a static route for the VPN network. Creates two firewall policies to manage traffic in and out of the VPN. This script is ideal for network administrators looking to quickly set up consistent VPN configurations across multiple FortiGate devices.
+Multi_DPY_w_BCKP_Log_Encrypt: Main project folder containing the primary script.
 
-Prerequisites FortiGate Device Requirements FortiGate device(s) accessible via SSH. Appropriate credentials with administrative access. Software Requirements Python 3.x installed. paramiko library for SSH connectivity. SSH access to each FortiGate device. Installation Install Python if not already installed on your system.
+Commands: Contains a text file with the commands to configure VPN settings on the FortiGate devices.
 
-Install paramiko with the following command:
+Crypt: Stores encrypted passwords for FortiGate and FTP access, along with scripts to generate these encrypted files.
 
-bash Copy code pip install paramiko Clone or download this repository.
+FTP_Backup: Directory where backups are uploaded via FTP using FileZilla.
 
-Configuration Before running the script, ensure the following parameters in the script are set according to your environment:
+script_testing: Contains test versions of the main script for additional functionality or testing.
 
-VPN Name: "AGK-OCI-CARCAMO" Phase 1 Parameters: Remote IP Address: Replace with the target IP address. Outgoing Interface: Usually wan or wwan. Preshared Key: Replace with the actual key. Encryption and Authentication: 3DES and MD5. XAUTH Type: Client. Credentials: Replace with your VPN username and password. Phase 2 Parameters: Local and Remote Addresses: Set local address per FortiGate, remote remains static. Encryption and Authentication: 3DES and MD5. Auto-negotiation: Enable. Key Lifetime: 3600 seconds. Script Execution To run the script, use the following command:
+Segments: Holds a text file with the IP addresses of the FortiGate devices to be configured.
 
-bash Copy code python Deploy_VPN_Fortigate.py The script will connect to the specified FortiGate device(s) and perform the configuration in the following order:
+Logs: Directory where log files for each script run are saved.
 
-Step 1: Configure the IPsec VPN tunnel. Step 2: Add a static route. Step 3: Add firewall policies for traffic management. Example Commands VPN Configuration Commands (Step 1):
+Required Software
 
-Configures IPsec Phase 1 and Phase 2 with custom settings. Static Route Commands (Step 2):
+FileZilla: Used as an FTP server for backing up configuration files.
 
-Adds a static route to the VPN with destination 10.70.0.0/255.255.255.0. Firewall Policy Commands (Step 3):
+Visual Studio Code: For coding and executing the Python scripts.
 
-Adds two policies: Policy 1: AGK-OCI-CARCAMOS for outbound traffic. Policy 2: LAN-AGK-OCI-CARCAMOS for inbound traffic.
+GitHub: Used to manage versions and pull requests.
 
-Troubleshooting Common Errors Return code -119: The schedule field is required for firewall policies. Ensure each policy includes set schedule always. Return code -160: A required field, such as action or schedule, may be missing. Return code -651: Incorrect value for set keepalive. Ensure it is set in Phase 1 with set keepalive enable. ModuleNotFoundError: No module named 'paramiko': Install Paramiko by running pip install paramiko. Tips Ensure SSH is enabled on each FortiGate device. Verify all parameters, especially IP addresses and interface names, to avoid command failures. Check the FortiGate firmware version as some commands may differ slightly between versions. 
-License This project is licensed under the MIT License.
+FortiGate 30E-3G4G-GBL: Tested on this FortiGate device model.
+
+Requirements
+
+Python 3.x
+
+paramiko: For SSH connections.
+
+cryptography: For encryption and decryption of credentials.
+
+Install required packages using:
+
+bash
+
+Copy code
+
+pip install paramiko cryptography
+
+Configuration
+
+FortiGate IP List: In the Segments folder, add a file named fortigate_ips.txt with the IPs of each FortiGate device to be configured, one per line.
+
+Commands: Place the commands for VPN configuration in a text file inside the Commands folder. Ensure each command is on a new line.
+
+Encrypted Passwords: Encrypt FortiGate and FTP passwords and save them in the Crypt folder. The encryption keys and generated encrypted files should match the file paths defined in the script.
+
+Usage
+
+Run the main script in the Multi_DPY_w_BCKP_Log_Encrypt folder.
+
+Upon execution, the script:
+
+Reads FortiGate IPs from the Segments folder.
+
+Decrypts stored passwords from the Crypt folder.
+
+Connects to each FortiGate device via SSH and applies the VPN configuration commands from the Commands folder.
+
+Backs up the pre- and post-configuration states to the FTP_Backup folder.
+
+Logs details of each run to the Logs folder.
+
+Logging
+
+Logs for each script execution are saved in the Logs folder, providing information on:
+
+
+Successful or failed connections.
+
+Command execution results.
+
+Backup status.
+
+Additional Information
+
+Testing: The script has been tested on a FortiGate 30E-3G4G-GBL.
+
+Code Versioning: Managed with GitHub, using pull requests for updates.
+
+Troubleshooting
+
+Connection Issues: Ensure correct IPs and encrypted credentials are provided.
+
+File Permissions: Verify read/write permissions for backup and log folders.
+
+FTP Configuration: Check that FileZilla FTP server details match those specified in the script.
+
