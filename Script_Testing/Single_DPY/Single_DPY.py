@@ -4,7 +4,7 @@ import paramiko
 
 # Replace with FortiGate details
 
-FORTIGATE_IP = "10.10.14.32"
+FORTIGATE_IP = "192.168."
 USERNAME = "admin"
 PASSWORD = "4gu4k4n_17"
 

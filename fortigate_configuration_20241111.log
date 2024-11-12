@@ -1,288 +1,0 @@
-2024-11-11 12:31:26,536 - INFO - Successfully decrypted password from Crypt\encrypted_password1.txt
-2024-11-11 12:31:26,558 - INFO - Successfully decrypted password from Crypt\encrypted_password2.txt
-2024-11-11 12:31:26,566 - INFO - Loaded FortiGate IPs from file
-2024-11-11 12:31:26,576 - INFO - Loaded commands from Commands/fortigate_commands.txt
-2024-11-11 12:31:26,576 - INFO - Connecting to FortiGate 10.10.14.30
-2024-11-11 12:31:26,592 - INFO - Connected (version 2.0, client 47cKzfbPw--Sdey)
-2024-11-11 12:31:26,675 - INFO - Authentication (password) successful!
-2024-11-11 12:31:26,676 - INFO - Connected to FortiGate 10.10.14.30
-2024-11-11 12:31:27,725 - INFO - Commands executed successfully
-2024-11-11 12:31:27,726 - INFO - execute backup config ftp pre_backup_20241111_123126.conf 10.10.14.50 filezilla_py Metro1998.2050
-CUN_CAP_PRADONORTE # execute backup config ftp pre_backup_20241111_123126.conf 1 0.10.14.50 filezilla_py Metro1998.2050
-2024-11-11 12:31:27,726 - INFO - Pre-configuration backup saved as FTP_BCKP\10.10.14.30\pre_backup_20241111_123126.conf
-2024-11-11 12:32:28,833 - INFO - Commands executed successfully
-2024-11-11 12:32:28,833 - INFO - # Commands for IPsec Tunnel (Step 1)
-CUN_CAP_PRADONORTE # # Commands for IPsec Tunnel (Step 1)
-
-CUN_CAP_PRADONORTE # config vpn ipsec phase1-interface
-
-CUN_CAP_PRADONORTE (phase1-interface) # edit AGK-OCI-CARCAMO
-
-CUN_CAP_PRADONORTE (AGK-OCI-CARCAMO) # set interface wwan
-
-CUN_CAP_PRADONORTE (AGK-OCI-CARCAMO) # set remote-gw 159.54.146.111
-
-CUN_CAP_PRADONORTE (AGK-OCI-CARCAMO) # set psksecret 1iAoDhcEAgk2025#
-
-CUN_CAP_PRADONORTE (AGK-OCI-CARCAMO) # set proposal 3des-md5
-
-CUN_CAP_PRADONORTE (AGK-OCI-CARCAMO) # set xauthtype client
-
-CUN_CAP_PRADONORTE (AGK-OCI-CARCAMO) # set authusr CAC_LAKIN
-
-CUN_CAP_PRADONORTE (AGK-OCI-CARCAMO) # set authpasswd T3lemetria.2025#
-
-CUN_CAP_PRADONORTE (AGK-OCI-CARCAMO) # set auto-negotiate enable
-
-CUN_CAP_PRADONORTE (AGK-OCI-CARCAMO) # set autokey-keepalive enable
-
-command parse error before 'autokey-keepalive'
-Command fail. Return code -61
-
-CUN_CAP_PRADONORTE (AGK-OCI-CARCAMO) # set keylife 3600
-
-CUN_CAP_PRADONORTE (AGK-OCI-CARCAMO) # next
-
-CUN_CAP_PRADONORTE (phase1-interface) # end
-
-CUN_CAP_PRADONORTE # # Commands for IPsec Tunnel Phase 2 (Step 1)
-
-CUN_CAP_PRADONORTE # config vpn ipsec phase2-interface
-
-CUN_CAP_PRADONORTE (phase2-interface) # edit AGK-OCI-CARCAMO
-
-CUN_CAP_PRADONORTE (AGK-OCI-CARCAMO) # set phase1name AGK-OCI-CARCAMO
-
-CUN_CAP_PRADONORTE (AGK-OCI-CARCAMO) # set src-subnet 10.10.14.0/24
-
-CUN_CAP_PRADONORTE (AGK-OCI-CARCAMO) # set dst-subnet 10.70.0.0/24
-
-CUN_CAP_PRADONORTE (AGK-OCI-CARCAMO) # set proposal 3des-md5
-
-CUN_CAP_PRADONORTE (AGK-OCI-CARCAMO) # next
-
-CUN_CAP_PRADONORTE (phase2-interface) # end
-
-CUN_CAP_PRADONORTE # # Commands for Static Route (Step 2)
-
-CUN_CAP_PRADONORTE # config router static
-
-CUN_CAP_PRADONORTE (static) # edit 1
-
-CUN_CAP_PRADONORTE (1) # set dst 10.70.0.0 255.255.255.0
-
-CUN_CAP_PRADONORTE (1) # set device AGK-OCI-CARCAMO
-
-CUN_CAP_PRADONORTE (1) # next
-
-CUN_CAP_PRADONORTE (static) # end
-
-CUN_CAP_PRADONORTE # # Commands for Firewall Policy 1 (Step 3)
-
-CUN_CAP_PRADONORTE # config firewall policy
-
-CUN_CAP_PRADONORTE (policy) # edit 1
-
-CUN_CAP_PRADONORTE (1) # set name AGK-OCI-CARCAMOS
-
-CUN_CAP_PRADONORTE (1) # set srcintf AGK-OCI-CARCAMO
-
-CUN_CAP_PRADONORTE (1) # set dstintf wwan
-
-CUN_CAP_PRADONORTE (1) # set srcaddr all
-
-CUN_CAP_PRADONORTE (1) # set dstaddr all
-
-CUN_CAP_PRADONORTE (1) # set service ALL
-
-CUN_CAP_PRADONORTE (1) # set nat disable
-
-CUN_CAP_PRADONORTE (1) # set logtraffic all
-
-CUN_CAP_PRADONORTE (1) # set schedule always
-
-CUN_CAP_PRADONORTE (1) # set action accept
-
-CUN_CAP_PRADONORTE (1) # next
-
-CUN_CAP_PRADONORTE (policy) # end
-
-CUN_CAP_PRADONORTE # # Commands for Firewall Policy 2 (Step 3)
-
-CUN_CAP_PRADONORTE # config firewall policy
-
-CUN_CAP_PRADONORTE (policy) # edit 2
-
-CUN_CAP_PRADONORTE (2) # set name LAN-AGK-OCI-CARCAMOS
-
-CUN_CAP_PRADONORTE (2) # set srcintf wwan
-
-CUN_CAP_PRADONORTE (2) # set dstintf AGK-OCI-CARCAMO
-
-CUN_CAP_PRADONORTE (2) # set srcaddr all
-
-CUN_CAP_PRADONORTE (2) # set dstaddr all
-
-CUN_CAP_PRADONORTE (2) # set service ALL
-
-CUN_CAP_PRADONORTE (2) # set nat disable
-
-CUN_CAP_PRADONORTE (2) # set logtraffic all
-
-CUN_CAP_PRADONORTE (2) # set schedule always
-
-CUN_CAP_PRADONORTE (2) # set action accept
-
-CUN_CAP_PRADONORTE (2) # next
-
-CUN_CAP_PRADONORTE (policy) # end
-
-CUN_CAP_PRADONORTE #
-2024-11-11 12:32:29,876 - INFO - Commands executed successfully
-2024-11-11 12:32:29,876 - INFO - execute backup config ftp post_backup_20241111_123228.conf 10.10.14.50 filezilla_py Metro1998.2050
-CUN_CAP_PRADONORTE # execute backup config ftp post_backup_20241111_123228.conf  10.10.14.50 filezilla_py Metro1998.2050
-2024-11-11 12:32:29,877 - INFO - Post-configuration backup saved as FTP_BCKP\10.10.14.30\post_backup_20241111_123228.conf
-2024-11-11 12:32:29,877 - INFO - VPN configuration for 10.10.14.30 completed successfully.
-2024-11-11 12:32:29,879 - INFO - Connection to 10.10.14.30 closed.
-2024-11-11 12:32:29,879 - INFO - Connecting to FortiGate 10.10.14.32
-2024-11-11 12:32:29,886 - INFO - Connected (version 2.0, client t5cmf)
-2024-11-11 12:32:29,968 - INFO - Authentication (password) successful!
-2024-11-11 12:32:29,969 - INFO - Connected to FortiGate 10.10.14.32
-2024-11-11 12:32:31,023 - INFO - Commands executed successfully
-2024-11-11 12:32:31,023 - INFO - execute backup config ftp pre_backup_20241111_123229.conf 10.10.14.50 filezilla_py Metro1998.2050
-CAC_LAKIN # execute backup config ftp pre_backup_20241111_123229.conf 10.10.14.5 0 filezilla_py Metro1998.2050
-2024-11-11 12:32:31,024 - INFO - Pre-configuration backup saved as FTP_BCKP\10.10.14.32\pre_backup_20241111_123229.conf
-2024-11-11 12:33:32,104 - INFO - Commands executed successfully
-2024-11-11 12:33:32,105 - INFO - # Commands for IPsec Tunnel (Step 1)
-CAC_LAKIN # # Commands for IPsec Tunnel (Step 1)
-
-CAC_LAKIN # config vpn ipsec phase1-interface
-
-CAC_LAKIN (phase1-interface) # edit AGK-OCI-CARCAMO
-
-CAC_LAKIN (AGK-OCI-CARCAMO) # set interface wwan
-
-CAC_LAKIN (AGK-OCI-CARCAMO) # set remote-gw 159.54.146.111
-
-CAC_LAKIN (AGK-OCI-CARCAMO) # set psksecret 1iAoDhcEAgk2025#
-
-CAC_LAKIN (AGK-OCI-CARCAMO) # set proposal 3des-md5
-
-CAC_LAKIN (AGK-OCI-CARCAMO) # set xauthtype client
-
-CAC_LAKIN (AGK-OCI-CARCAMO) # set authusr CAC_LAKIN
-
-CAC_LAKIN (AGK-OCI-CARCAMO) # set authpasswd T3lemetria.2025#
-
-CAC_LAKIN (AGK-OCI-CARCAMO) # set auto-negotiate enable
-
-CAC_LAKIN (AGK-OCI-CARCAMO) # set autokey-keepalive enable
-
-command parse error before 'autokey-keepalive'
-Command fail. Return code -61
-
-CAC_LAKIN (AGK-OCI-CARCAMO) # set keylife 3600
-
-CAC_LAKIN (AGK-OCI-CARCAMO) # next
-
-CAC_LAKIN (phase1-interface) # end
-
-CAC_LAKIN # # Commands for IPsec Tunnel Phase 2 (Step 1)
-
-CAC_LAKIN # config vpn ipsec phase2-interface
-
-CAC_LAKIN (phase2-interface) # edit AGK-OCI-CARCAMO
-
-CAC_LAKIN (AGK-OCI-CARCAMO) # set phase1name AGK-OCI-CARCAMO
-
-CAC_LAKIN (AGK-OCI-CARCAMO) # set src-subnet 10.10.14.0/24
-
-CAC_LAKIN (AGK-OCI-CARCAMO) # set dst-subnet 10.70.0.0/24
-
-CAC_LAKIN (AGK-OCI-CARCAMO) # set proposal 3des-md5
-
-CAC_LAKIN (AGK-OCI-CARCAMO) # next
-
-CAC_LAKIN (phase2-interface) # end
-
-CAC_LAKIN # # Commands for Static Route (Step 2)
-
-CAC_LAKIN # config router static
-
-CAC_LAKIN (static) # edit 1
-
-CAC_LAKIN (1) # set dst 10.70.0.0 255.255.255.0
-
-CAC_LAKIN (1) # set device AGK-OCI-CARCAMO
-
-CAC_LAKIN (1) # next
-
-CAC_LAKIN (static) # end
-
-CAC_LAKIN # # Commands for Firewall Policy 1 (Step 3)
-
-CAC_LAKIN # config firewall policy
-
-CAC_LAKIN (policy) # edit 1
-
-CAC_LAKIN (1) # set name AGK-OCI-CARCAMOS
-
-CAC_LAKIN (1) # set srcintf AGK-OCI-CARCAMO
-
-CAC_LAKIN (1) # set dstintf wwan
-
-CAC_LAKIN (1) # set srcaddr all
-
-CAC_LAKIN (1) # set dstaddr all
-
-CAC_LAKIN (1) # set service ALL
-
-CAC_LAKIN (1) # set nat disable
-
-CAC_LAKIN (1) # set logtraffic all
-
-CAC_LAKIN (1) # set schedule always
-
-CAC_LAKIN (1) # set action accept
-
-CAC_LAKIN (1) # next
-
-CAC_LAKIN (policy) # end
-
-CAC_LAKIN # # Commands for Firewall Policy 2 (Step 3)
-
-CAC_LAKIN # config firewall policy
-
-CAC_LAKIN (policy) # edit 2
-
-CAC_LAKIN (2) # set name LAN-AGK-OCI-CARCAMOS
-
-CAC_LAKIN (2) # set srcintf wwan
-
-CAC_LAKIN (2) # set dstintf AGK-OCI-CARCAMO
-
-CAC_LAKIN (2) # set srcaddr all
-
-CAC_LAKIN (2) # set dstaddr all
-
-CAC_LAKIN (2) # set service ALL
-
-CAC_LAKIN (2) # set nat disable
-
-CAC_LAKIN (2) # set logtraffic all
-
-CAC_LAKIN (2) # set schedule always
-
-CAC_LAKIN (2) # set action accept
-
-CAC_LAKIN (2) # next
-
-CAC_LAKIN (policy) # end
-
-CAC_LAKIN #
-2024-11-11 12:33:33,152 - INFO - Commands executed successfully
-2024-11-11 12:33:33,152 - INFO - execute backup config ftp post_backup_20241111_123332.conf 10.10.14.50 filezilla_py Metro1998.2050
-CAC_LAKIN # execute backup config ftp post_backup_20241111_123332.conf 10.10.14. 50 filezilla_py Metro1998.2050
-2024-11-11 12:33:33,152 - INFO - Post-configuration backup saved as FTP_BCKP\10.10.14.32\post_backup_20241111_123332.conf
-2024-11-11 12:33:33,152 - INFO - VPN configuration for 10.10.14.32 completed successfully.
-2024-11-11 12:33:33,153 - INFO - Connection to 10.10.14.32 closed.
